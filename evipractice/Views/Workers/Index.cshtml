@@ -1,0 +1,102 @@
+﻿@model IEnumerable<evipractice.Models.Worker>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+    <div class="col-12">
+        <h3>Workers</h3>
+        <div class="d-flex justify-content-end mb-1">
+            <a class="btn btn-primary btn-sm" asp-action="Create" asp-controller="Workers"><i class="fa fa-plus"></i> Create</a>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Phone No</th>
+                    <th>Skill</th>
+                    <th>Pay Rate</th>
+                    <th>Hire Rate</th>
+                    <th>Is Active</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var w in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="~/Pictures/@w.Picture" class="rounded-circle" style="width:50px" />
+                        </td>
+                        <td>@w.Name</td>
+                        <td>@w.ContactNo</td>
+                        <td>@w.Skill</td>
+                        <td>@w.PayRate.ToString("0.00")</td>
+                        <td>@(w.HireDate?.ToString("yyyy-MM-dd"))</td>
+                        <td>@(w.IsActive ? "Yes" : "No")</td>
+                        <td>
+                            
+                            <button title="Delete this item" type="button" class="btn btn-danger btn-sm del" data-pk="@w.WorkerId">Delete<i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="7">
+                            <h4>WorkLogs</h4>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var wl in w.WorkLogs)
+                                    {
+                                        <tr>
+                                            <td>@(wl.StartDate?.ToString("MM dd, yyyy"))</td>
+                                            <td>@(wl.EndDate?.ToString("MM dd, yyyy"))</td>
+                                            <td>@wl.Description</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+       
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/jquery/jquery.min.js"></script>
+    <script>
+        $('.del').click(function () { 
+            var id = $(this).data('pk');
+            var btn = $(this);
+            var trW = btn.closest('tr');
+            var trL = trW.next();
+            if (confirm("Are you sure to delete?\nWorer with work logs will be delete.")) { 
+                $.ajax({
+                    url:"/Workers/Delete/"+id,
+                    type:"post",
+                    dataType:"json",
+                    success: r => {
+                        if(r.success && r.success == true)
+                        {
+                            trW.remove();
+                            trL.remove();
+                        }
+                    }
+                })
+            }
+
+        });
+    </script>
+}
+
+

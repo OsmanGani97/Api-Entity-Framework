@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    
+   <script src="~/lib/bootstrap/js/bootstrap.bundle.js"></script>
+   
+    @await RenderSectionAsync("styles", false)
+    <style>
+        body {
+            padding-top: 70px;
+        }
+    </style>
+
+
+
+</head>
+<body>
+    <nav class="navbar navbar-light bg-light text-black   navbar-expand-md fixed-top border-1">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">W.S</a>
+           
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-action="Index" asp-controller="Home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-action="Index" asp-controller="Workers">Workers</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        @RenderBody()
+    </div>
+    <footer class="container-fluid">
+        <p>Footer</p>
+    </footer>
+    @await RenderSectionAsync("scripts", false)
+</body>
+</html>
